@@ -1,13 +1,28 @@
 import PhoneBook from './components/PhoneBook/PhoneBook'
-import Form from './components/Form/Form'
+import ContactForm from './components/ContactForm/ContactForm'
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
- <PhoneBook />
- <Form/>
-    </div>
+   
+
+<div>
+  <PhoneBook />
+  <h1>Phonebook</h1>
+  <ContactForm  />
+
+  {/* <h2>Contacts</h2>
+  <Filter ... />
+  <ContactList ... /> */}
+</div>
+
+
+
+
+
+
+
+
   );
 }
 

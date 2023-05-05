@@ -1,31 +1,48 @@
-import React from "react"
-
-export const FormList=function(){
-} 
-
-
-
+import React from "react";
 
 class Form extends React.Component{
 
-state = {
-    id:'',
-    contacts: [],
-    name: '',
-    number: '',
+    state = {
+        id:'',
+        contacts: [],
+        name: '',
+        number: '',
+        }
+
+    handleInputChange=evt=>{
+        const {target:{name,value}}=evt
+        this.setState({
+            
+            [name]:value,
+        })   
     }
 
-handleInputChange=evt=>{
-    this.setState({
-        [evt.target.name]:evt.target.value
-    })
-   
-}
+    handleFormSubmit=evt=>{
+        evt.preventDefault()
+      
+        this.props.collectorSubmit(this.state)
+        this.reset()
+    }
 
-render(){
-return(
-<div>
-    <form action="">
+    reset=()=>{
+        this.setState({
+            id:'',
+            contacts: [],
+            name: '',
+            number: '',
+            })
+    }
+
+    handleCheckBoxState(){
+console.log(this.props.handleCheckBoxState);
+        }   
+
+    render(){
+        return(
+
+         
+
+<form onSubmit={this.handleFormSubmit}>
         <label>
             Ім'я<input
             type="text"
@@ -50,18 +67,13 @@ return(
             />  
         </label>
 
-<input type="submit"  />
+<input type="submit"  disabled={this.handleCheckBoxState}/>
 
     </form>
-</div>
 
 
-
-
-
-)
+        )
+    }
 }
-
-} 
 
 export default Form

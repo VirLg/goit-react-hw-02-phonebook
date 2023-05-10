@@ -20,11 +20,12 @@ class App extends React.Component{
         number: ''
       }
 
-    handleInputChangeName=evt=>{
+    handleInputChange=evt=>{
         console.log(evt.target.name);
-        const {target:{name,value}}=evt
+        const {target:{name,value,number}}=evt
         this.setState({
             [name]:value,
+            [number]:value,
         })   
         
     }
@@ -33,12 +34,12 @@ class App extends React.Component{
 
     handleFormSubmitAddContact=evt=>{
         evt.preventDefault()
-
+const{target:{elements:{name,number}}}=evt
         this.setState((prevState)=>({
             contacts:[...prevState.contacts, {
                 id: nanoid(), 
-                name: evt.target.elements.name.value, 
-                number: '459-12-56'
+                name: name.value, 
+                number: number.value,
             }]
 
         }))
@@ -79,9 +80,25 @@ class App extends React.Component{
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             value={this.state.name}
-            onChange={this.handleInputChangeName}
+            onChange={this.handleInputChange}
             />
         </label>
+
+<label>
+
+Номер<input
+  type="tel"
+  name="number"
+  pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+  title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+  required
+  value={this.state.number}
+onChange={this.handleInputChange}
+/>
+
+
+
+</label>
 
   <input type="submit"/>
              

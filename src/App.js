@@ -20,60 +20,79 @@ class App extends React.Component{
         number: ''
       }
 
-    handleInputChange=evt=>{
-        console.log(evt.target.name);
+handleInputChange=evt=>{
+        
         const {target:{name,value,number}}=evt
         this.setState({
             [name]:value,
             [number]:value,
         })   
-        
     }
-   
-   
 
-    handleFormSubmitAddContact=evt=>{
-        evt.preventDefault()
-const{target:{elements:{name,number}}}=evt
-        this.setState((prevState)=>({
-            contacts:[...prevState.contacts, {
-                id: nanoid(), 
-                name: name.value, 
-                number: number.value,
-            }]
-
-        }))
-
-        // console.log(evt.target.elements.contacts.name.value);
-    //    this.dataSubmit(this.state)
+handleSearchInput=evt=>{
         
+        this.setState({
+        filter:evt.target.value,
+        })
+       
+
+       this.filterContacts()
+     
+            }
+     
+filterContacts=()=>{
+    const{filter,contacts}=this.state;
+  return(contacts.filter(({name})=>(name.toUpperCase()).includes(filter.toUpperCase())))
+
+}
+   
+
+   
+        
+               
+        
+    
+
+
+// console.log();
+// this.state.contacts.filter(el=>el.name)
+
+
+
+handleFormSubmitAddContact=evt=>{
+    evt.preventDefault()
+    const{target:{elements:{name,number}}}=evt
+    this.setState((prevState)=>({
+    contacts:[...prevState.contacts, {
+        id: nanoid(), 
+        name: name.value, 
+        number: number.value,
+    }]
+    }))  
     // this.reset()
     }
 
-
- 
-
-    reset=()=>{
-        this.setState({
-       
-            contacts: [],
-            name: '',
-            number: '',
-            })
+reset=()=>{
+    this.setState({
+    
+        contacts: [],
+        name: '',
+        number: '',
+        })
     }
 
   
 
   
 
-    render(){
+render(){
         return(
 
          <>
     <Section>
          <form onSubmit={this.handleFormSubmitAddContact}>
         <label>
-            Ім'я<input
+            Name<input
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -84,40 +103,51 @@ const{target:{elements:{name,number}}}=evt
             />
         </label>
 
-<label>
+        <label>
+        Number<input
+          type="tel"
+          name="number"
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          required
+          value={this.state.number}
+        onChange={this.handleInputChange}
+        />
 
-Номер<input
-  type="tel"
-  name="number"
-  pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-  title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-  required
-  value={this.state.number}
-onChange={this.handleInputChange}
-/>
+    </label>
 
-
-
-</label>
-
-  <input type="submit"/>
+    <input type="submit"/>
              
     </form>
-         </Section>
+    </Section>
 
 
     <Section>
-        
+    <Contact
+    contacts={this.filterContacts()}
+    />
+    </Section>
 
-        <Contact
-        contacts={this.state.contacts}
+    <Section>
+    <label>      
+      Search<input
+      type='text'
+      name="filter"
+      value={this.state.filter}
+      onChange={this.handleSearchInput}
+      />
 
+    </label>
 
-        />
-      
 
     </Section>
 
+    
+   <Section>
+
+
+   </Section>
+   
          </>
         )
     }

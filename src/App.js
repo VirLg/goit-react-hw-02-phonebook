@@ -1,8 +1,10 @@
 import './App.css';
 import React from "react";
 
-import {Section} from './components/Section/Section'
-import {Contact} from './components/Contats/Contact'
+import {Section} from './components/Section/Section';
+import {Contact} from './components/Contats/Contact';
+import { nanoid } from 'nanoid';
+
 
 class App extends React.Component{
 
@@ -18,21 +20,33 @@ class App extends React.Component{
         number: ''
       }
 
-    handleInputChange=evt=>{
-        
+    handleInputChangeName=evt=>{
+        console.log(evt.target.name);
         const {target:{name,value}}=evt
         this.setState({
-            
             [name]:value,
         })   
+        
     }
+   
+   
 
     handleFormSubmitAddContact=evt=>{
         evt.preventDefault()
-      this.setState({})
-        console.log(evt.target.element);
+
+        this.setState((prevState)=>({
+            contacts:[...prevState.contacts, {
+                id: nanoid(), 
+                name: evt.target.elements.name.value, 
+                number: '459-12-56'
+            }]
+
+        }))
+
+        // console.log(evt.target.elements.contacts.name.value);
     //    this.dataSubmit(this.state)
-        this.reset()
+        
+    // this.reset()
     }
 
 
@@ -47,17 +61,9 @@ class App extends React.Component{
             })
     }
 
-    handleCheckBoxState(){
-
-        }  
+  
 
   
-        
-
-
-
-
-
 
     render(){
         return(
@@ -73,24 +79,12 @@ class App extends React.Component{
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             value={this.state.name}
-            onChange={this.handleInputChange}
+            onChange={this.handleInputChangeName}
             />
         </label>
 
-        <label>
-            Номер<input
-            type="tel"
-            name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-            value={this.state.number}
-            onChange={this.handleInputChange}
-            />  
-        </label>
-
-<input type="submit"  />
-
+  <input type="submit"/>
+             
     </form>
          </Section>
 

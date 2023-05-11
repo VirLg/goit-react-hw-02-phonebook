@@ -1,10 +1,13 @@
 import './App.css';
 import React from "react";
+import { nanoid } from 'nanoid';
 
 import {Section} from './components/Section/Section';
 import {Contact} from './components/Contats/Contact';
-import { nanoid } from 'nanoid';
 
+import {Filter} from './components/FilterContact/FilterContact'
+
+import Form from './components/Form/Form';
 
 class App extends React.Component{
 
@@ -16,65 +19,36 @@ class App extends React.Component{
           {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
         ],
         filter: '',
-        name: '',
-        number: ''
       }
 
-handleInputChange=evt=>{
-        
-        const {target:{name,value,number}}=evt
-        this.setState({
-            [name]:value,
-            [number]:value,
-        })   
-    }
+
+
+formSubmitHendler=(data)=>{
+    const{name,number}=data
+   this.setState((prevState)=>(
+    {
+    contacts:[...prevState.contacts, {
+        id: nanoid(), 
+        name: name, 
+        number: number,
+    }]
+    })) 
+
+    // this.filterContacts(data)
+
+}      
 
 handleSearchInput=evt=>{
         
         this.setState({
         filter:evt.target.value,
         })
-       
-
-       this.filterContacts()
      
             }
-     
-filterContacts=()=>{
-    const{filter,contacts}=this.state;
-  return(contacts.filter(({name})=>(name.toUpperCase()).includes(filter.toUpperCase())))
 
-}
-   
-
-   
-        
-               
-        
-    
-
-
-// console.log();
-// this.state.contacts.filter(el=>el.name)
-
-
-
-handleFormSubmitAddContact=evt=>{
-    evt.preventDefault()
-    const{target:{elements:{name,number}}}=evt
-    this.setState((prevState)=>({
-    contacts:[...prevState.contacts, {
-        id: nanoid(), 
-        name: name.value, 
-        number: number.value,
-    }]
-    }))  
-    // this.reset()
-    }
 
 reset=()=>{
     this.setState({
-    
         contacts: [],
         name: '',
         number: '',
@@ -86,68 +60,27 @@ reset=()=>{
   
 
 render(){
+const {filter}=this.state;
+
+const visibleContacts=this.state.contacts.filter(el=>el.name.includes(this.state.filter))
         return(
 
          <>
+          
     <Section>
-         <form onSubmit={this.handleFormSubmitAddContact}>
-        <label>
-            Name<input
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-            value={this.state.name}
-            onChange={this.handleInputChange}
-            />
-        </label>
-
-        <label>
-        Number<input
-          type="tel"
-          name="number"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
-          value={this.state.number}
-        onChange={this.handleInputChange}
-        />
-
-    </label>
-
-    <input type="submit"/>
-             
-    </form>
-    </Section>
-
-
-    <Section>
-    <Contact
-    contacts={this.filterContacts()}
+    <Form onSubmit={this.formSubmitHendler}
     />
     </Section>
 
-    <Section>
-    <label>      
-      Search<input
-      type='text'
-      name="filter"
-      value={this.state.filter}
-      onChange={this.handleSearchInput}
-      />
-
-    </label>
 
 
-    </Section>
+<Section>
+    <Contact  contacts={visibleContacts}/>
+</Section>
 
-    
-   <Section>
-
-
-   </Section>
-   
+<Section>
+ <Filter value={filter} onChange={this.handleSearchInput}/>        
+    </Section>   
          </>
         )
     }

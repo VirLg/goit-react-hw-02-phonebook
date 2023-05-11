@@ -1,6 +1,6 @@
 
 
-export const Contact=function({contacts=[]}){
+export const Contact=function({contacts}){
 console.log(contacts);
 
 

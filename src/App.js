@@ -24,19 +24,29 @@ class App extends React.Component{
 
 
 formSubmitHendler=(data)=>{
+const state=this.state.contacts.find(el=>el.name===data.name)
+        if(state){
+    return console.log('!!!!!!!!!!');
+}else{
+   
+    this.addNewContact(data)
+
+}
+}
+
+addNewContact=(data)=>{
     const{name,number}=data
+    const contact={
+        id: nanoid(), 
+        name, 
+        number,
+    }
    this.setState((prevState)=>(
     {
-    contacts:[...prevState.contacts, {
-        id: nanoid(), 
-        name: name, 
-        number: number,
-    }]
+    contacts:[contact, ...prevState.contacts]
     })) 
 
-    // this.filterContacts(data)
-
-}      
+}
 
 handleSearchInput=evt=>{
         
@@ -47,27 +57,27 @@ handleSearchInput=evt=>{
             }
 
 
-reset=()=>{
-    this.setState({
-        contacts: [],
-        name: '',
-        number: '',
-        })
-    }
+
 
   
 
   
 
 render(){
-const {filter}=this.state;
+const {filter,contacts}=this.state;
 
-const visibleContacts=this.state.contacts.filter(el=>el.name.includes(this.state.filter))
+const visibleContacts=contacts.filter(el=>el.name.toLowerCase().includes(filter.toLowerCase()))
+
+
+
+
+
         return(
 
          <>
           
     <Section>
+    <h1>Phonebook</h1>
     <Form onSubmit={this.formSubmitHendler}
     />
     </Section>
@@ -75,12 +85,12 @@ const visibleContacts=this.state.contacts.filter(el=>el.name.includes(this.state
 
 
 <Section>
+<h2>Contacts</h2>
+<Filter value={filter} onChange={this.handleSearchInput}/>    
     <Contact  contacts={visibleContacts}/>
 </Section>
 
-<Section>
- <Filter value={filter} onChange={this.handleSearchInput}/>        
-    </Section>   
+   
          </>
         )
     }

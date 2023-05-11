@@ -23,6 +23,15 @@ handleFormSubmitAddContact=evt=>{
     // this.reset()
     }
 
+
+    reset=()=>{
+        this.setState({
+      
+            name: '',
+            number: '',
+            })
+        }
+
 render(){
 
     return(

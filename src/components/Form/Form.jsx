@@ -20,7 +20,7 @@ handleFormSubmitAddContact=evt=>{
     evt.preventDefault()
     
     this.props.onSubmit(this.state)
-    // this.reset()
+    this.reset()
     }
 
 

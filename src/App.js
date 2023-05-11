@@ -1,6 +1,7 @@
 import './App.css';
 import React from "react";
 import { nanoid } from 'nanoid';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import {Section} from './components/Section/Section';
 import {Contact} from './components/Contats/Contact';
@@ -24,11 +25,11 @@ class App extends React.Component{
 
 
 formSubmitHendler=(data)=>{
-const state=this.state.contacts.find(el=>el.name===data.name)
-        if(state){
-    return console.log('!!!!!!!!!!');
-}else{
-   
+    const state=this.state.contacts.find(el=>el.name===data.name)
+            if(state){
+        return Notify.failure("Sorry, this contact already in your list.");
+    }else{
+    
     this.addNewContact(data)
 
 }
@@ -45,7 +46,15 @@ addNewContact=(data)=>{
     {
     contacts:[contact, ...prevState.contacts]
     })) 
+}
 
+DeleteContact=ContactId=>{
+
+    console.log(ContactId);
+    this.setState(prevState=>({
+contacts:prevState.contacts.filter(el=>ContactId!==el.id)
+
+}))
 }
 
 handleSearchInput=evt=>{
@@ -57,20 +66,12 @@ handleSearchInput=evt=>{
             }
 
 
-
-
-  
-
-  
-
 render(){
-const {filter,contacts}=this.state;
+const {filter="",contacts}=this.state;
 
-const visibleContacts=contacts.filter(el=>el.name.toLowerCase().includes(filter.toLowerCase()))
+const visibleContacts=contacts.filter(el=>el.name.includes(filter))
 
-
-
-
+// contacts.filter(el=>el.name.includes(filter))
 
         return(
 
@@ -87,7 +88,9 @@ const visibleContacts=contacts.filter(el=>el.name.toLowerCase().includes(filter.
 <Section>
 <h2>Contacts</h2>
 <Filter value={filter} onChange={this.handleSearchInput}/>    
-    <Contact  contacts={visibleContacts}/>
+    <Contact  
+    contacts={visibleContacts} 
+    onDeleteContact={this.DeleteContact}/>
 </Section>
 
    

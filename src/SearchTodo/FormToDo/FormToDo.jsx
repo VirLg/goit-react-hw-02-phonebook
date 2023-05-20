@@ -11,6 +11,8 @@ export const FormToDo = props => {
   const handleSubmit = e => {
     e.preventTdefault();
     createUser({ email: email, password: password });
+    setEmail('');
+    setPassword('');
   };
 
   return (

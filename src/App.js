@@ -13,6 +13,7 @@ import HuksForm from './components/Form/HuksForm';
 import { AppToDo } from './SearchTodo/App/App';
 
 export default function App() {
+  //*useState
   const [contacts, setContacts] = useState([
     { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
     { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
@@ -20,6 +21,7 @@ export default function App() {
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ]);
   const [filter, setFilter] = useState('');
+  //*useState
   const formSubmitHendler = data => {
     const state = contacts.find(el => el.name === data.name);
     if (state) {
@@ -37,6 +39,9 @@ export default function App() {
       number,
     };
     console.log(contact);
+    setContacts(prevState => {
+      return [contact, ...prevState];
+    });
     // setState(prevState => ({
     //   contacts: [contact, ...prevState.contacts],
     // }));
